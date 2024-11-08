@@ -2,7 +2,7 @@
 const content = document.getElementById("content")
 
 async function getData() {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=386")
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=9999")
     const data = await response.json()
     // console.log(data.results)
 
@@ -14,25 +14,51 @@ async function getData() {
     const pokeDetails = await Promise.all(pokemonPromises)
     console.log(pokeDetails)
     content.innerHTML = (pokeDetails.map((pokemon) => {
+        const abilities = pokemon.abilities.map(ability => ability.ability.name).join(", ")
+        console.log(abilities)
         return (
           `  
         <div class="pokemon-card">
             <h2>${pokemon.name.toUpperCase()}</h2>
             <img src="${pokemon.sprites.front_default}"></img>
-            <h4>Id: </h4> <p class=id>${pokemon.id}</p>  
-            <h4>Height: </h4><p class=height>${pokemon.height}</p>
-            <h4>Weight: </h4><p class=weight>${pokemon.weight}</p>
-            <h4>Base xp: </h4><p class=basexp>${pokemon.base_experience}</p>
-            // <p class=abilities>${pokemon.abilities.ability}</p> 
-           
-
+            <div class="cardinfo">
+              <div class="id">
+                <h4>Id: </h4> 
+                <p class="id">${pokemon.id}</p>
+              </div>  
+              <div class="height">
+                <h4>Height: </h4>
+                <p class="height">${pokemon.height}</p>
+              </div>
+              <div class="weight">
+                <h4>Weight: </h4>
+                <p>${pokemon.weight}</p>
+              </div>
+              <div class="basexp">
+                <h4>Base xp: </h4>
+                <p>${pokemon.base_experience}</p>
+              </div>
+              <div class="abilities">
+                <h4>Abilities: </h4>
+                ${pokemon.abilities.map((allAbilities) => `
+                <p>${allAbilities.ability.name}
+                `)}
+              </div>
+              <div class="type">
+                <h4>Type:</h4>
+                ${pokemon.types.map((allTypes) => `
+                <p>${allTypes.type.name}</p>
+                `).join(" ")} 
+                </div>
+            </div>
         </div>
             `
         )
-    }))
+    }).join(" "))
 }
 
 getData()
+
 
 
 // async function getData() {
