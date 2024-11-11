@@ -9,7 +9,7 @@ async function getData() {
     const pokemonUrls = data.results.map((pokemon) => pokemon.url)
     // console.log(pokemonUrls))
     
-    const pokemonPromises = pokemonUrls.map((url) => fetch(url).then((response)=> response.json()))
+    const pokemonPromises = await pokemonUrls.map((url) => fetch(url).then((response)=> response.json()))
     // console.log(pokemonPromises)
     const pokeDetails = await Promise.all(pokemonPromises)
     console.log(pokeDetails)
